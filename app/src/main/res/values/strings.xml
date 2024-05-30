@@ -12,4 +12,7 @@
     <string name="sign_up_link">¿No tienes una cuenta? Regístrate</string>
     <string name="sign_in_link">¿Ya tienes una cuenta? Inicia Sesión</string>
     <string name="title_welcome_page">Bienvenidx</string>
+    <string name="movie_title">Nombre de película</string>
+    <string name="movie_rating">Rating de película</string>
+    <string name="movie_content_description">Imágen de la película</string>
 </resources>
