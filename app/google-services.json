@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "125971592387",
+    "project_id": "movieauth-dfc56",
+    "storage_bucket": "movieauth-dfc56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125971592387:android:b07f741c64ac72c7ab5e76",
+        "android_client_info": {
+          "package_name": "com.prueba.moviestest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvqNw7g8iuhKb8yK6xkImXv4uIxAngAR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

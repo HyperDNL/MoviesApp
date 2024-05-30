@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Movies Test</string>
+    <string name="title_sign_in">Iniciar Sesión</string>
+    <string name="title_sign_up">Registrarse</string>
+    <string name="title_logout">Salir</string>
+    <string name="prompt_email">Correo Electrónico</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar Sesión</string>
+    <string name="action_sign_in_short">Iniciar</string>
+    <string name="action_sign_up">Registrarse</string>
+    <string name="action_sign_up_short">Registrarse</string>
+    <string name="sign_up_link">¿No tienes una cuenta? Regístrate</string>
+    <string name="sign_in_link">¿Ya tienes una cuenta? Inicia Sesión</string>
+    <string name="title_welcome_page">Bienvenidx</string>
+</resources>
