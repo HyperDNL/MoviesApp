@@ -28,6 +28,10 @@ class MovieListActivity : AppCompatActivity() {
     private lateinit var logoutButton: Button
     private val movies = mutableListOf<Movie>()
 
+    private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_list)
@@ -47,6 +51,22 @@ class MovieListActivity : AppCompatActivity() {
         movieAdapter = MovieAdapter(movies) { movie -> showMovieDetails(movie) }
         recyclerView.adapter = movieAdapter
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                        loadMoreMovies()
+                    }
+                }
+            }
+        })
 
         logoutButton.setOnClickListener {
             // Cerrar sesión utilizando el controlador
@@ -57,39 +77,53 @@ class MovieListActivity : AppCompatActivity() {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            loadMovies()
+            currentPage = 1
+            isLastPage = false
+            loadMovies(currentPage)
         }
 
-        loadMovies()
+        loadMovies(currentPage)
     }
 
-    private fun loadMovies() {
+    private fun loadMovies(page: Int) {
+        isLoading = true
         swipeRefreshLayout.isRefreshing = true
 
         val tmdbService = ApiClient.apiService
-        tmdbService.getNowPlayingMovies("c0823934438075d63f1dbda4023e76fc", 1)
+        tmdbService.getNowPlayingMovies("c0823934438075d63f1dbda4023e76fc", page)
             .enqueue(object : Callback<MovieResponse> {
                 override fun onResponse(
                     call: Call<MovieResponse>,
                     response: Response<MovieResponse>
                 ) {
                     swipeRefreshLayout.isRefreshing = false
+                    isLoading = false
 
                     if (response.isSuccessful) {
                         response.body()?.results?.let {
+                            if (page == 1) {
+                                movies.clear()
+                            }
                             movies.addAll(it)
                             movieAdapter.notifyDataSetChanged()
+                            isLastPage =
+                                it.isEmpty()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                     swipeRefreshLayout.isRefreshing = false
-
+                    isLoading = false
                     Toast.makeText(this@MovieListActivity, "Error: ${t.message}", Toast.LENGTH_LONG)
                         .show()
                 }
             })
+    }
+
+    private fun loadMoreMovies() {
+        currentPage++
+        loadMovies(currentPage)
     }
 
     private fun showMovieDetails(movie: Movie) {
